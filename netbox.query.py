@@ -1,8 +1,10 @@
 import pynetbox
+import shutil
 import json
 import ipaddress
 import types
 import subprocess
+from os import walk
 
 with open("./netbox.settings.json") as f:
     nb_conf = json.load(f)
@@ -40,4 +42,9 @@ with open("./netbox.dnscontrol.js", "w") as f:
     f.close()
 
 
-subprocess.run(['dnscontrol','push'])
+dnscontrol = subprocess.run(['dnscontrol','push'], capture_output=True)
+
+if(dnscontrol.returncode == 0):
+    for (dirpath, dirnames, filenames) in walk("./zones/"):
+        for file in filenames:
+            shutil.move(dirpath+file, "../coredns/"+file)

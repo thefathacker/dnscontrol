@@ -156,3 +156,4 @@ dnscontrol.exe
 zones/*
 
 netbox.creds.json
+netbox.dnscontrol.js
